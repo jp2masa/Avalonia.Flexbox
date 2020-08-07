@@ -1,0 +1,39 @@
+version: 0.1.0-build{build}
+image: Visual Studio 2019
+
+shallow_clone: true
+clone_folder: c:\Avalonia.Flexbox
+
+configuration:
+  - Debug
+  - Release
+platform: Any CPU
+
+matrix:
+  fast_finish: true
+
+nuget:
+  account_feed: false
+  project_feed: true
+  disable_publish_on_pr: true
+
+build_script:
+  - cmd: dotnet msbuild /t:Restore;Build;Pack Avalonia.Flexbox.sln
+
+test: off
+
+artifacts:
+  - path: 'artifacts\Debug\nupkg\*.nupkg'
+    name: DebugNupkg
+  - path: 'artifacts\Release\nupkg\*.nupkg'
+    name: ReleaseNupkg
+
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/jp2masa/api/v2/package
+  artifact: DebugNupkg
+  api_key:
+    secure: puOcEbngEmaVMEnUL20u4mzATgvoyaTPRWGGwE98as1+8KGY3ypOKzt5OV63duwI
+  on:
+    branch: master
+    configuration: Debug

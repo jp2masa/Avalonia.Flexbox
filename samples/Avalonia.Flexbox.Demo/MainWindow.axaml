@@ -1,0 +1,140 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:flex="clr-namespace:Avalonia.Flexbox;assembly=Avalonia.Flexbox"
+        xmlns:conv="clr-namespace:Avalonia.Flexbox.Demo.Converters"
+        xmlns:vm="clr-namespace:Avalonia.Flexbox.Demo.ViewModels"
+        x:Class="Avalonia.Flexbox.Demo.MainWindow"
+        x:CompileBindings="True"
+        x:DataType="vm:MainWindowViewModel"
+        MinWidth="320"
+        MinHeight="240"
+        Icon="avares://Avalonia.Flexbox.Demo/Resources/Icon.png"
+        Title="Avalonia.Flexbox Demo">
+    <Window.Resources>
+        <conv:NumberToThicknessConverter x:Key="NumberToThicknessConverter" />
+    </Window.Resources>
+    <Window.Styles>
+        <Style Selector="ComboBox">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="RadioButton">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="Padding" Value="4,0,0,0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Styles>
+
+    <DockPanel Margin="16">
+
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      Padding="0,0,16,0"
+                      MinWidth="200">
+
+            <StackPanel Spacing="16">
+
+                <TextBlock FontSize="16"
+                           Text="Properties" />
+
+                <flex:FlexPanel ColumnSpacing="8">
+                    <RadioButton IsChecked="{Binding IsItemsControl}"
+                                 Content="ItemsControl" />
+                    <RadioButton IsChecked="{Binding IsItemsRepeater}"
+                                 Content="ItemsRepeater" />
+                </flex:FlexPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Direction:" />
+                    <ComboBox Items="{Binding DirectionValues}"
+                              SelectedItem="{Binding Direction}" />
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="JustifyContent:" />
+                    <ComboBox Items="{Binding JustifyContentValues}"
+                              SelectedItem="{Binding JustifyContent}" />
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="AlignItems:" />
+                    <ComboBox Items="{Binding AlignItemsValues}"
+                              SelectedItem="{Binding AlignItems}" />
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="Wrap:" />
+                    <ComboBox Items="{Binding WrapValues}"
+                              SelectedItem="{Binding Wrap}" />
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="ColumnSpacing:" />
+                    <NumericUpDown Minimum="0"
+                                    Value="{Binding ColumnSpacing}" />
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="RowSpacing:" />
+                    <NumericUpDown Minimum="0"
+                                   Value="{Binding RowSpacing}" />
+                </StackPanel>
+
+            </StackPanel>
+
+        </ScrollViewer>
+
+        <ItemsControl IsVisible="{Binding IsItemsControl}"
+                      BorderBrush="Black"
+                      BorderThickness="1"
+                      Items="{Binding Numbers}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <flex:FlexPanel Direction="{Binding Direction}"
+                                    JustifyContent="{Binding JustifyContent}"
+                                    AlignItems="{Binding AlignItems}"
+                                    Wrap="{Binding Wrap}"
+                                    ColumnSpacing="{Binding ColumnSpacing}"
+                                    RowSpacing="{Binding RowSpacing}" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="LightBlue"
+                            Padding="{Binding Converter={StaticResource NumberToThicknessConverter}}">
+                        <TextBlock HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding}" />
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Border IsVisible="{Binding IsItemsRepeater}"
+                BorderBrush="Black"
+                BorderThickness="1">
+
+            <ItemsRepeater Items="{Binding Numbers}">
+                <ItemsRepeater.Layout>
+                    <flex:FlexLayout Direction="{Binding Direction}"
+                                     JustifyContent="{Binding JustifyContent}"
+                                     AlignItems="{Binding AlignItems}"
+                                     Wrap="{Binding Wrap}"
+                                     ColumnSpacing="{Binding ColumnSpacing}"
+                                     RowSpacing="{Binding RowSpacing}" />
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="x:Int32">
+                        <Border Background="LightBlue"
+                            Padding="{Binding Converter={StaticResource NumberToThicknessConverter}}">
+                            <TextBlock HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding}" />
+                        </Border>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+
+        </Border>
+
+    </DockPanel>
+
+</Window>

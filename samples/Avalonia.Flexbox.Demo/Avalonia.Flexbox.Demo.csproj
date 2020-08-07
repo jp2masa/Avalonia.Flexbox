@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <OutputType>WinExe</OutputType>
+        <ApplicationIcon>$(IconIcoPath)</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Resources\Icon.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Desktop" />
+        <PackageReference Include="Avalonia.Diagnostics" />
+        <PackageReference Include="Avalonia.ReactiveUI" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Avalonia.Flexbox\Avalonia.Flexbox.csproj" />
+    </ItemGroup>
+
+</Project>

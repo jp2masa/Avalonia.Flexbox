@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Flexbox", "src\Avalonia.Flexbox\Avalonia.Flexbox.csproj", "{3474C152-4B81-4E94-B149-82BCC1B4A8E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4EC01977-A4B9-43F0-A9AD-F800A11B9429}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{5B227943-8228-466D-BECB-2BAFDC3DDF30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Targets", "Targets", "{FC21DC29-CDDA-49DA-805A-BFF4A1084B81}"
+	ProjectSection(SolutionItems) = preProject
+		build\Targets\Import.props = build\Targets\Import.props
+		build\Targets\Import.targets = build\Targets\Import.targets
+		build\Targets\PackageProperties.props = build\Targets\PackageProperties.props
+		build\Targets\PackageProperties.targets = build\Targets\PackageProperties.targets
+		build\Targets\PackageVersions.targets = build\Targets\PackageVersions.targets
+		build\Targets\RepoLayout.props = build\Targets\RepoLayout.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.Flexbox.Demo", "samples\Avalonia.Flexbox.Demo\Avalonia.Flexbox.Demo.csproj", "{64B2D521-D0AA-4D25-BC01-BBCA35A36948}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{0ED17017-116A-4D3B-A094-40AEDFE95385}"
+	ProjectSection(SolutionItems) = preProject
+		samples\Directory.Build.props = samples\Directory.Build.props
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3474C152-4B81-4E94-B149-82BCC1B4A8E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3474C152-4B81-4E94-B149-82BCC1B4A8E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3474C152-4B81-4E94-B149-82BCC1B4A8E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3474C152-4B81-4E94-B149-82BCC1B4A8E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64B2D521-D0AA-4D25-BC01-BBCA35A36948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64B2D521-D0AA-4D25-BC01-BBCA35A36948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64B2D521-D0AA-4D25-BC01-BBCA35A36948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64B2D521-D0AA-4D25-BC01-BBCA35A36948}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5B227943-8228-466D-BECB-2BAFDC3DDF30} = {4EC01977-A4B9-43F0-A9AD-F800A11B9429}
+		{FC21DC29-CDDA-49DA-805A-BFF4A1084B81} = {5B227943-8228-466D-BECB-2BAFDC3DDF30}
+		{0ED17017-116A-4D3B-A094-40AEDFE95385} = {4EC01977-A4B9-43F0-A9AD-F800A11B9429}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A1CEBA2-78F5-4365-9E9B-84E75DEA43E8}
+	EndGlobalSection
+EndGlobal
