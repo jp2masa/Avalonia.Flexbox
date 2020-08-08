@@ -9,7 +9,7 @@ namespace Avalonia.Flexbox
     public sealed partial class FlexLayout : NonVirtualizingLayout
     {
         public static readonly StyledProperty<FlexDirection> DirectionProperty =
-            AvaloniaProperty.Register<FlexLayout, FlexDirection>(nameof(FlexDirection));
+            AvaloniaProperty.Register<FlexLayout, FlexDirection>(nameof(Direction));
 
         public static readonly StyledProperty<JustifyContent> JustifyContentProperty =
             AvaloniaProperty.Register<FlexLayout, JustifyContent>(nameof(JustifyContent));

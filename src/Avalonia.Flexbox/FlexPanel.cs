@@ -6,7 +6,7 @@ namespace Avalonia.Flexbox
     public sealed class FlexPanel : Panel
     {
         public static readonly StyledProperty<FlexDirection> DirectionProperty =
-            AvaloniaProperty.Register<FlexPanel, FlexDirection>(nameof(FlexDirection));
+            AvaloniaProperty.Register<FlexPanel, FlexDirection>(nameof(Direction));
 
         public static readonly StyledProperty<JustifyContent> JustifyContentProperty =
             AvaloniaProperty.Register<FlexPanel, JustifyContent>(nameof(JustifyContent));
