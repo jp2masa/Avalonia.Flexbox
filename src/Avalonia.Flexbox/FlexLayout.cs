@@ -31,13 +31,14 @@ namespace Avalonia.Flexbox
 
         static FlexLayout()
         {
-            DirectionProperty.Changed.AddClassHandler<FlexLayout>(InvalidateMeasure);
-            JustifyContentProperty.Changed.AddClassHandler<FlexLayout>(InvalidateMeasure);
-            AlignItemsProperty.Changed.AddClassHandler<FlexLayout>(InvalidateMeasure);
-            AlignContentProperty.Changed.AddClassHandler<FlexLayout>(InvalidateMeasure);
-            WrapProperty.Changed.AddClassHandler<FlexLayout>(InvalidateMeasure);
-            ColumnSpacingProperty.Changed.AddClassHandler<FlexLayout>(InvalidateMeasure);
-            RowSpacingProperty.Changed.AddClassHandler<FlexLayout>(InvalidateMeasure);
+            AffectsMeasure(
+                DirectionProperty,
+                JustifyContentProperty,
+                AlignItemsProperty,
+                AlignContentProperty,
+                WrapProperty,
+                ColumnSpacingProperty,
+                RowSpacingProperty);
         }
 
         public FlexDirection Direction
@@ -263,7 +264,19 @@ namespace Avalonia.Flexbox
             return finalSize;
         }
 
-        private static void InvalidateMeasure(FlexLayout layout, AvaloniaPropertyChangedEventArgs e) => layout.InvalidateMeasure();
+        // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/17d4ae9e4ea0c99dc9cfe951d6e1cbcf64f628dc/src/Avalonia.Layout/Layoutable.cs
+        private static void AffectsMeasure(params AvaloniaProperty[] properties)
+        {
+            void Invalidate(AvaloniaPropertyChangedEventArgs e)
+            {
+                (e.Sender as FlexLayout)?.InvalidateMeasure();
+            }
+
+            foreach (var property in properties)
+            {
+                property.Changed.Subscribe(Invalidate);
+            }
+        }
 
         private struct FlexLayoutState
         {
