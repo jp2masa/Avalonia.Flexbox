@@ -61,6 +61,12 @@
                 </StackPanel>
 
                 <StackPanel Spacing="8">
+                    <TextBlock Text="AlignContent:" />
+                    <ComboBox Items="{Binding AlignContentValues}"
+                              SelectedItem="{Binding AlignContent}" />
+                </StackPanel>
+
+                <StackPanel Spacing="8">
                     <TextBlock Text="Wrap:" />
                     <ComboBox Items="{Binding WrapValues}"
                               SelectedItem="{Binding Wrap}" />
@@ -91,6 +97,7 @@
                     <flex:FlexPanel Direction="{Binding Direction}"
                                     JustifyContent="{Binding JustifyContent}"
                                     AlignItems="{Binding AlignItems}"
+                                    AlignContent="{Binding AlignContent}"
                                     Wrap="{Binding Wrap}"
                                     ColumnSpacing="{Binding ColumnSpacing}"
                                     RowSpacing="{Binding RowSpacing}" />
@@ -117,6 +124,7 @@
                     <flex:FlexLayout Direction="{Binding Direction}"
                                      JustifyContent="{Binding JustifyContent}"
                                      AlignItems="{Binding AlignItems}"
+                                     AlignContent="{Binding AlignContent}"
                                      Wrap="{Binding Wrap}"
                                      ColumnSpacing="{Binding ColumnSpacing}"
                                      RowSpacing="{Binding RowSpacing}" />

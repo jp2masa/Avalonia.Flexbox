@@ -15,6 +15,7 @@ namespace Avalonia.Flexbox.Demo.ViewModels
         private FlexDirection _direction = FlexDirection.Row;
         private JustifyContent _justifyContent = JustifyContent.FlexStart;
         private AlignItems _alignItems = AlignItems.FlexStart;
+        private AlignContent _alignContent = AlignContent.FlexStart;
         private FlexWrap _wrap = FlexWrap.Wrap;
 
         private int _columnSpacing = 8;
@@ -25,6 +26,8 @@ namespace Avalonia.Flexbox.Demo.ViewModels
         public IEnumerable JustifyContentValues { get; } = Enum.GetValues(typeof(JustifyContent));
 
         public IEnumerable AlignItemsValues { get; } = Enum.GetValues(typeof(AlignItems));
+
+        public IEnumerable AlignContentValues { get; } = Enum.GetValues(typeof(AlignContent));
 
         public IEnumerable WrapValues { get; } = Enum.GetValues(typeof(FlexWrap));
 
@@ -56,6 +59,12 @@ namespace Avalonia.Flexbox.Demo.ViewModels
         {
             get => _alignItems;
             set => this.RaiseAndSetIfChanged(ref _alignItems, value);
+        }
+
+        public AlignContent AlignContent
+        {
+            get => _alignContent;
+            set => this.RaiseAndSetIfChanged(ref _alignContent, value);
         }
 
         public FlexWrap Wrap

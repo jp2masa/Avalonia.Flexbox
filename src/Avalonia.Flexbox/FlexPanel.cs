@@ -14,6 +14,9 @@ namespace Avalonia.Flexbox
         public static readonly StyledProperty<AlignItems> AlignItemsProperty =
             AvaloniaProperty.Register<FlexPanel, AlignItems>(nameof(AlignItems));
 
+        public static readonly StyledProperty<AlignContent> AlignContentProperty =
+            AvaloniaProperty.Register<FlexPanel, AlignContent>(nameof(AlignContent));
+
         public static readonly StyledProperty<FlexWrap> WrapProperty =
             AvaloniaProperty.Register<FlexLayout, FlexWrap>(nameof(Wrap), FlexWrap.Wrap);
 
@@ -32,6 +35,7 @@ namespace Avalonia.Flexbox
                 DirectionProperty,
                 JustifyContentProperty,
                 AlignItemsProperty,
+                AlignContentProperty,
                 WrapProperty,
                 ColumnSpacingProperty,
                 RowSpacingProperty);
@@ -44,6 +48,7 @@ namespace Avalonia.Flexbox
             _layout[~FlexLayout.DirectionProperty] = this[~DirectionProperty];
             _layout[~FlexLayout.JustifyContentProperty] = this[~JustifyContentProperty];
             _layout[~FlexLayout.AlignItemsProperty] = this[~AlignItemsProperty];
+            _layout[~FlexLayout.AlignContentProperty] = this[~AlignContentProperty];
             _layout[~FlexLayout.WrapProperty] = this[~WrapProperty];
             _layout[~FlexLayout.ColumnSpacingProperty] = this[~ColumnSpacingProperty];
             _layout[~FlexLayout.RowSpacingProperty] = this[~RowSpacingProperty];
@@ -65,6 +70,12 @@ namespace Avalonia.Flexbox
         {
             get => _layout.AlignItems;
             set => _layout.AlignItems = value;
+        }
+
+        public AlignContent AlignContent
+        {
+            get => _layout.AlignContent;
+            set => _layout.AlignContent = value;
         }
 
         public FlexWrap Wrap
