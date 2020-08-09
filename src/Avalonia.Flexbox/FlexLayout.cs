@@ -6,7 +6,7 @@ using Avalonia.Layout;
 
 namespace Avalonia.Flexbox
 {
-    public sealed partial class FlexLayout : NonVirtualizingLayout
+    public sealed partial class FlexLayout : NonVirtualizingLayout, IFlexLayout
     {
         public static readonly StyledProperty<FlexDirection> DirectionProperty =
             AvaloniaProperty.Register<FlexLayout, FlexDirection>(nameof(Direction));
@@ -90,11 +90,16 @@ namespace Avalonia.Flexbox
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var isColumn = Direction == FlexDirection.Column || Direction == FlexDirection.ColumnReverse;
-            var even = JustifyContent == JustifyContent.SpaceEvenly ? 2 : 0;
+            return Measure(this, context, availableSize);
+        }
+
+        internal static Size Measure(IFlexLayout layout, NonVirtualizingLayoutContext context, Size availableSize)
+        {
+            var isColumn = layout.Direction == FlexDirection.Column || layout.Direction == FlexDirection.ColumnReverse;
+            var even = layout.JustifyContent == JustifyContent.SpaceEvenly ? 2 : 0;
 
             var max = Uv.FromSize(availableSize, isColumn);
-            var spacing = Uv.FromSize(ColumnSpacing, RowSpacing, isColumn);
+            var spacing = Uv.FromSize(layout.ColumnSpacing, layout.RowSpacing, isColumn);
 
             var u = 0.0;
             var maxU = 0.0;
@@ -115,7 +120,7 @@ namespace Avalonia.Flexbox
 
                 var size = Uv.FromSize(element.DesiredSize, isColumn);
 
-                if (Wrap != FlexWrap.NoWrap && u + size.U + (m + even) * spacing.U > max.U)
+                if (layout.Wrap != FlexWrap.NoWrap && u + size.U + (m + even) * spacing.U > max.U)
                 {
                     sections.Add(new Section(first, i - 1, u, maxV));
 
@@ -155,7 +160,7 @@ namespace Avalonia.Flexbox
                 }
             }
 
-            if (Wrap == FlexWrap.WrapReverse)
+            if (layout.Wrap == FlexWrap.WrapReverse)
             {
                 sections.Reverse();
             }
@@ -172,14 +177,19 @@ namespace Avalonia.Flexbox
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var isColumn = Direction == FlexDirection.Column || Direction == FlexDirection.ColumnReverse;
-            var isReverse = Direction == FlexDirection.RowReverse || Direction == FlexDirection.ColumnReverse;
+            return Arrange(this, context, finalSize);
+        }
+
+        internal static Size Arrange(IFlexLayout layout, NonVirtualizingLayoutContext context, Size finalSize)
+        {
+            var isColumn = layout.Direction == FlexDirection.Column || layout.Direction == FlexDirection.ColumnReverse;
+            var isReverse = layout.Direction == FlexDirection.RowReverse || layout.Direction == FlexDirection.ColumnReverse;
 
             var state = (FlexLayoutState)context.LayoutState;
             var n = state.Sections.Count;
 
             var size = Uv.FromSize(finalSize, isColumn);
-            var spacing = Uv.FromSize(ColumnSpacing, RowSpacing, isColumn);
+            var spacing = Uv.FromSize(layout.ColumnSpacing, layout.RowSpacing, isColumn);
 
             var totalSectionV = 0.0;
 
@@ -192,7 +202,7 @@ namespace Avalonia.Flexbox
 
             var totalV = totalSectionV + totalSpacingV;
 
-            var spacingV = AlignContent switch
+            var spacingV = layout.AlignContent switch
             {
                 AlignContent.FlexStart => spacing.V,
                 AlignContent.FlexEnd => spacing.V,
@@ -203,9 +213,9 @@ namespace Avalonia.Flexbox
                 _ => throw new NotImplementedException()
             };
 
-            var scaleV = AlignContent == AlignContent.Stretch ? ((size.V - totalSpacingV) / totalSectionV) : 1.0;
+            var scaleV = layout.AlignContent == AlignContent.Stretch ? ((size.V - totalSpacingV) / totalSectionV) : 1.0;
 
-            var v = AlignContent switch
+            var v = layout.AlignContent switch
             {
                 AlignContent.FlexStart => 0.0,
                 AlignContent.FlexEnd => size.V - totalV,
@@ -221,7 +231,7 @@ namespace Avalonia.Flexbox
             {
                 var sectionV = scaleV * section.V;
 
-                var (spacingU, u) = JustifyContent switch
+                var (spacingU, u) = layout.JustifyContent switch
                 {
                     JustifyContent.FlexStart => (spacing.U, 0.0),
                     JustifyContent.FlexEnd => (spacing.U, size.U - section.U - (section.Last - section.First) * spacing.U),
@@ -237,7 +247,7 @@ namespace Avalonia.Flexbox
                     var element = context.Children[i];
                     var elementSize = Uv.FromSize(element.DesiredSize, isColumn);
 
-                    double finalV = AlignItems switch
+                    double finalV = layout.AlignItems switch
                     {
                         AlignItems.FlexStart => v,
                         AlignItems.FlexEnd => v + sectionV - elementSize.V,
@@ -246,7 +256,7 @@ namespace Avalonia.Flexbox
                         _ => throw new NotImplementedException()
                     };
 
-                    if (AlignItems == AlignItems.Stretch)
+                    if (layout.AlignItems == AlignItems.Stretch)
                     {
                         elementSize = new Uv(elementSize.U, sectionV);
                     }

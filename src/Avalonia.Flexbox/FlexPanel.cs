@@ -3,7 +3,7 @@ using Avalonia.Layout;
 
 namespace Avalonia.Flexbox
 {
-    public sealed class FlexPanel : Panel
+    public sealed class FlexPanel : Panel, IFlexLayout
     {
         public static readonly StyledProperty<FlexDirection> DirectionProperty =
             AvaloniaProperty.Register<FlexPanel, FlexDirection>(nameof(Direction));
@@ -26,7 +26,6 @@ namespace Avalonia.Flexbox
         public static readonly StyledProperty<double> RowSpacingProperty =
             AvaloniaProperty.Register<FlexPanel, double>(nameof(RowSpacing));
 
-        private readonly FlexLayout _layout = new FlexLayout();
         private readonly NonVirtualizingLayoutContext _layoutContext;
 
         static FlexPanel()
@@ -44,59 +43,52 @@ namespace Avalonia.Flexbox
         public FlexPanel()
         {
             _layoutContext = new PanelNonVirtualizingLayoutContext(this);
-
-            _layout[~FlexLayout.DirectionProperty] = this[~DirectionProperty];
-            _layout[~FlexLayout.JustifyContentProperty] = this[~JustifyContentProperty];
-            _layout[~FlexLayout.AlignItemsProperty] = this[~AlignItemsProperty];
-            _layout[~FlexLayout.AlignContentProperty] = this[~AlignContentProperty];
-            _layout[~FlexLayout.WrapProperty] = this[~WrapProperty];
-            _layout[~FlexLayout.ColumnSpacingProperty] = this[~ColumnSpacingProperty];
-            _layout[~FlexLayout.RowSpacingProperty] = this[~RowSpacingProperty];
         }
 
         public FlexDirection Direction
         {
-            get => _layout.Direction;
-            set => _layout.Direction = value;
+            get => GetValue(DirectionProperty);
+            set => SetValue(DirectionProperty, value);
         }
 
         public JustifyContent JustifyContent
         {
-            get => _layout.JustifyContent;
-            set => _layout.JustifyContent = value;
+            get => GetValue(JustifyContentProperty);
+            set => SetValue(JustifyContentProperty, value);
         }
 
         public AlignItems AlignItems
         {
-            get => _layout.AlignItems;
-            set => _layout.AlignItems = value;
+            get => GetValue(AlignItemsProperty);
+            set => SetValue(AlignItemsProperty, value);
         }
 
         public AlignContent AlignContent
         {
-            get => _layout.AlignContent;
-            set => _layout.AlignContent = value;
+            get => GetValue(AlignContentProperty);
+            set => SetValue(AlignContentProperty, value);
         }
 
         public FlexWrap Wrap
         {
-            get => _layout.Wrap;
-            set => _layout.Wrap = value;
+            get => GetValue(WrapProperty);
+            set => SetValue(WrapProperty, value);
         }
 
         public double ColumnSpacing
         {
-            get => _layout.ColumnSpacing;
-            set => _layout.ColumnSpacing = value;
+            get => GetValue(ColumnSpacingProperty);
+            set => SetValue(ColumnSpacingProperty, value);
         }
 
         public double RowSpacing
         {
-            get => _layout.RowSpacing;
-            set => _layout.RowSpacing = value;
+            get => GetValue(RowSpacingProperty);
+            set => SetValue(RowSpacingProperty, value);
         }
-        protected override Size MeasureOverride(Size availableSize) => _layout.Measure(_layoutContext, availableSize);
 
-        protected override Size ArrangeOverride(Size finalSize) => _layout.Arrange(_layoutContext, finalSize);
+        protected override Size MeasureOverride(Size availableSize) => FlexLayout.Measure(this, _layoutContext, availableSize);
+
+        protected override Size ArrangeOverride(Size finalSize) => FlexLayout.Arrange(this, _layoutContext, finalSize);
     }
 }
