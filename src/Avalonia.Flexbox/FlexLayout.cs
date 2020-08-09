@@ -247,7 +247,14 @@ namespace Avalonia.Flexbox
                     var element = context.Children[i];
                     var elementSize = Uv.FromSize(element.DesiredSize, isColumn);
 
-                    double finalV = layout.AlignItems switch
+                    var align = layout.AlignItems;
+
+                    if (element is Layoutable layoutable)
+                    {
+                        align = Flex.GetAlignSelf(layoutable) ?? align;
+                    }
+
+                    double finalV = align switch
                     {
                         AlignItems.FlexStart => v,
                         AlignItems.FlexEnd => v + sectionV - elementSize.V,
@@ -256,7 +263,7 @@ namespace Avalonia.Flexbox
                         _ => throw new NotImplementedException()
                     };
 
-                    if (layout.AlignItems == AlignItems.Stretch)
+                    if (align == AlignItems.Stretch)
                     {
                         elementSize = new Uv(elementSize.U, sectionV);
                     }
