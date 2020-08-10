@@ -232,6 +232,7 @@ namespace Avalonia.Flexbox
                 AlignContent.FlexStart => spacing.V,
                 AlignContent.FlexEnd => spacing.V,
                 AlignContent.Center => spacing.V,
+                AlignContent.Stretch => spacing.V,
                 AlignContent.SpaceBetween => spacing.V + (size.V - totalV) / (n - 1),
                 AlignContent.SpaceAround => (size.V - totalSectionV) / n,
                 AlignContent.SpaceEvenly => (size.V - totalSectionV) / (n + 1),
