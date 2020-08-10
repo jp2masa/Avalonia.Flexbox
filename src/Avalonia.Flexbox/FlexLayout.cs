@@ -29,16 +29,25 @@ namespace Avalonia.Flexbox
         public static readonly StyledProperty<double> RowSpacingProperty =
             AvaloniaProperty.Register<FlexLayout, double>(nameof(RowSpacing));
 
+        private static readonly AttachedProperty<IFlexLayout> OwnerFlexLayoutProperty =
+            AvaloniaProperty.RegisterAttached<FlexLayout, Layoutable, IFlexLayout>("OwnerFlexLayout");
+
         static FlexLayout()
         {
             AffectsMeasure(
                 DirectionProperty,
                 JustifyContentProperty,
-                AlignItemsProperty,
-                AlignContentProperty,
                 WrapProperty,
                 ColumnSpacingProperty,
                 RowSpacingProperty);
+
+            AffectsArrange(
+                AlignItemsProperty,
+                AlignContentProperty);
+
+            AffectsLayoutMeasure(Flex.OrderProperty);
+
+            AffectsLayoutArrange(Flex.AlignSelfProperty);
         }
 
         public FlexDirection Direction
@@ -118,6 +127,20 @@ namespace Avalonia.Flexbox
 
             foreach (var element in children)
             {
+                if (element is IAvaloniaObject obj)
+                {
+                    var owner = obj.GetValue(OwnerFlexLayoutProperty);
+
+                    if (owner is null)
+                    {
+                        obj.SetValue(OwnerFlexLayoutProperty, layout);
+                    }
+                    else if (owner != layout)
+                    {
+                        throw new InvalidOperationException();
+                    }
+                }
+
                 element.Measure(availableSize);
 
                 var size = Uv.FromSize(element.DesiredSize, isColumn);
@@ -286,6 +309,8 @@ namespace Avalonia.Flexbox
         private static int GetOrder(ILayoutable layoutable) => layoutable is Layoutable x ? Flex.GetOrder(x) : 0;
 
         // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/17d4ae9e4ea0c99dc9cfe951d6e1cbcf64f628dc/src/Avalonia.Layout/Layoutable.cs
+        // - AffectsMeasure
+        // - AffectsArrange
         private static void AffectsMeasure(params AvaloniaProperty[] properties)
         {
             void Invalidate(AvaloniaPropertyChangedEventArgs e)
@@ -296,6 +321,62 @@ namespace Avalonia.Flexbox
             foreach (var property in properties)
             {
                 property.Changed.Subscribe(Invalidate);
+            }
+        }
+
+        protected static void AffectsArrange(params AvaloniaProperty[] properties)
+        {
+            void Invalidate(AvaloniaPropertyChangedEventArgs e)
+            {
+                (e.Sender as FlexLayout)?.InvalidateArrange();
+            }
+
+            foreach (var property in properties)
+            {
+                property.Changed.Subscribe(Invalidate);
+            }
+        }
+
+        // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/17d4ae9e4ea0c99dc9cfe951d6e1cbcf64f628dc/src/Avalonia.Controls/Panel.cs
+        // - AffectsParentMeasure
+        // - AffectsParentArrange
+        // - AffectsParentMeasureInvalidate
+        // - AffectsParentArrangeInvalidate
+        private static void AffectsLayoutMeasure(params AvaloniaProperty[] properties)
+        {
+            foreach (var property in properties)
+            {
+                property.Changed.Subscribe(AffectsLayoutMeasureInvalidate);
+            }
+        }
+
+        private static void AffectsLayoutArrange(params AvaloniaProperty[] properties)
+        {
+            foreach (var property in properties)
+            {
+                property.Changed.Subscribe(AffectsLayoutArrangeInvalidate);
+            }
+        }
+
+        private static void AffectsLayoutMeasureInvalidate(AvaloniaPropertyChangedEventArgs e)
+        {
+            var control = e.Sender;
+            var owner = control.GetValue(OwnerFlexLayoutProperty);
+
+            if (owner is FlexLayout layout)
+            {
+                layout.InvalidateMeasure();
+            }
+        }
+
+        private static void AffectsLayoutArrangeInvalidate(AvaloniaPropertyChangedEventArgs e)
+        {
+            var control = e.Sender;
+            var owner = control.GetValue(OwnerFlexLayoutProperty);
+
+            if (owner is FlexLayout layout)
+            {
+                layout.InvalidateArrange();
             }
         }
 

@@ -33,11 +33,17 @@ namespace Avalonia.Flexbox
             AffectsMeasure<FlexPanel>(
                 DirectionProperty,
                 JustifyContentProperty,
-                AlignItemsProperty,
-                AlignContentProperty,
                 WrapProperty,
                 ColumnSpacingProperty,
                 RowSpacingProperty);
+
+            AffectsArrange<FlexPanel>(
+                AlignItemsProperty,
+                AlignContentProperty);
+
+            AffectsParentMeasure<FlexPanel>(Flex.OrderProperty);
+
+            AffectsParentArrange<FlexPanel>(Flex.AlignSelfProperty);
         }
 
         public FlexPanel()
