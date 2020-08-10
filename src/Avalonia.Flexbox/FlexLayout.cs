@@ -114,7 +114,9 @@ namespace Avalonia.Flexbox
 
             var i = 0;
 
-            foreach (var element in context.Children)
+            var children = context.Children.OrderBy(GetOrder).ToArray();
+
+            foreach (var element in children)
             {
                 element.Measure(availableSize);
 
@@ -165,7 +167,7 @@ namespace Avalonia.Flexbox
                 sections.Reverse();
             }
 
-            context.LayoutState = new FlexLayoutState(sections);
+            context.LayoutState = new FlexLayoutState(children, sections);
 
             return Uv.ToSize(new Uv(maxU + sections.Max(s => s.Last - s.First) * spacing.U, v + maxV + (sections.Count - 1) * spacing.V), isColumn);
         }
@@ -244,7 +246,7 @@ namespace Avalonia.Flexbox
 
                 for (int i = section.First; i <= section.Last; i++)
                 {
-                    var element = context.Children[i];
+                    var element = state.Children[i];
                     var elementSize = Uv.FromSize(element.DesiredSize, isColumn);
 
                     var align = layout.AlignItems;
@@ -281,6 +283,8 @@ namespace Avalonia.Flexbox
             return finalSize;
         }
 
+        private static int GetOrder(ILayoutable layoutable) => layoutable is Layoutable x ? Flex.GetOrder(x) : 0;
+
         // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/17d4ae9e4ea0c99dc9cfe951d6e1cbcf64f628dc/src/Avalonia.Layout/Layoutable.cs
         private static void AffectsMeasure(params AvaloniaProperty[] properties)
         {
@@ -297,10 +301,13 @@ namespace Avalonia.Flexbox
 
         private struct FlexLayoutState
         {
-            public FlexLayoutState(IReadOnlyList<Section> sections)
+            public FlexLayoutState(IReadOnlyList<ILayoutable> children, IReadOnlyList<Section> sections)
             {
+                Children = children;
                 Sections = sections;
             }
+
+            public IReadOnlyList<ILayoutable> Children { get; }
 
             public IReadOnlyList<Section> Sections { get; }
         }
