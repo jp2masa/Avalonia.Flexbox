@@ -325,7 +325,7 @@ namespace Avalonia.Flexbox
             }
         }
 
-        protected static void AffectsArrange(params AvaloniaProperty[] properties)
+        private static void AffectsArrange(params AvaloniaProperty[] properties)
         {
             void Invalidate(AvaloniaPropertyChangedEventArgs e)
             {
