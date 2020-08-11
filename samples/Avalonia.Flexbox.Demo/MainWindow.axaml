@@ -12,6 +12,24 @@
         Title="Avalonia.Flexbox Demo">
     <Window.Resources>
         <conv:NumberToThicknessConverter x:Key="NumberToThicknessConverter" />
+        <DataTemplate x:Key="ItemTemplate"
+                      x:DataType="vm:ItemViewModel">
+            <Border Padding="{Binding Value, Converter={StaticResource NumberToThicknessConverter}}"
+                    IsEnabled="{Binding !IsSelected}"
+                    Gestures.Tapped="OnItemTapped">
+                <Border.Styles>
+                    <Style Selector="Border">
+                        <Setter Property="Background" Value="LightBlue" />
+                    </Style>
+                    <Style Selector="Border[IsEnabled=False]">
+                        <Setter Property="Background" Value="DodgerBlue" />
+                    </Style>
+                </Border.Styles>
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="{Binding Value}" />
+            </Border>
+        </DataTemplate>
     </Window.Resources>
     <Window.Styles>
         <Style Selector="ComboBox">
@@ -84,6 +102,35 @@
                                    Value="{Binding RowSpacing}" />
                 </StackPanel>
 
+                <StackPanel Spacing="8">
+                    <TextBlock Text="SelectedItem AlignSelf:" />
+                    <ComboBox IsEnabled="{Binding !!SelectedItem}"
+                              Items="{Binding AlignSelfValues}"
+                              SelectedItem="{Binding SelectedItem.AlignSelfItem}" />
+                </StackPanel>
+
+                <StackPanel Spacing="8">
+                    <TextBlock Text="SelectedItem Order:" />
+                    <NumericUpDown IsEnabled="{Binding !!SelectedItem}"
+                                   Value="{Binding SelectedItem.Order}" />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,8,*">
+
+                    <Button Grid.Column="0"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding AddItemCommand}"
+                            Content="Add Item" />
+
+                    <Button Grid.Column="2"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding RemoveItemCommand}"
+                            Content="Remove Item" />
+
+                </Grid>
+
             </StackPanel>
 
         </ScrollViewer>
@@ -91,7 +138,15 @@
         <ItemsControl IsVisible="{Binding IsItemsControl}"
                       BorderBrush="Black"
                       BorderThickness="1"
-                      Items="{Binding Numbers}">
+                      Items="{Binding Numbers}"
+                      ItemTemplate="{StaticResource ItemTemplate}">
+            <ItemsControl.Styles>
+                <Style Selector="ContentPresenter"
+                       x:DataType="vm:ItemViewModel">
+                    <Setter Property="flex:Flex.AlignSelf" Value="{Binding AlignSelf}" />
+                    <Setter Property="flex:Flex.Order" Value="{Binding Order}" />
+                </Style>
+            </ItemsControl.Styles>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <flex:FlexPanel Direction="{Binding Direction}"
@@ -103,23 +158,21 @@
                                     RowSpacing="{Binding RowSpacing}" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Background="LightBlue"
-                            Padding="{Binding Converter={StaticResource NumberToThicknessConverter}}">
-                        <TextBlock HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding}" />
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
         </ItemsControl>
 
         <Border IsVisible="{Binding IsItemsRepeater}"
                 BorderBrush="Black"
                 BorderThickness="1">
 
-            <ItemsRepeater Items="{Binding Numbers}">
+            <ItemsRepeater Items="{Binding Numbers}"
+                           ItemTemplate="{StaticResource ItemTemplate}">
+                <ItemsRepeater.Styles>
+                    <Style Selector="Border"
+                           x:DataType="vm:ItemViewModel">
+                        <Setter Property="flex:Flex.AlignSelf" Value="{Binding AlignSelf}" />
+                        <Setter Property="flex:Flex.Order" Value="{Binding Order}" />
+                    </Style>
+                </ItemsRepeater.Styles>
                 <ItemsRepeater.Layout>
                     <flex:FlexLayout Direction="{Binding Direction}"
                                      JustifyContent="{Binding JustifyContent}"
@@ -129,16 +182,6 @@
                                      ColumnSpacing="{Binding ColumnSpacing}"
                                      RowSpacing="{Binding RowSpacing}" />
                 </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTemplate>
-                    <DataTemplate x:DataType="x:Int32">
-                        <Border Background="LightBlue"
-                            Padding="{Binding Converter={StaticResource NumberToThicknessConverter}}">
-                            <TextBlock HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding}" />
-                        </Border>
-                    </DataTemplate>
-                </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
 
         </Border>

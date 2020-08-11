@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
 
 using Avalonia.Flexbox.Demo.ViewModels;
 
@@ -25,6 +26,7 @@ namespace Avalonia.Flexbox.Demo
         public static AppBuilder BuildAvaloniaApp() =>
             AppBuilder.Configure<App>()
                       .UsePlatformDetect()
+                      .UseReactiveUI()
                       .LogToDebug();
     }
 }
