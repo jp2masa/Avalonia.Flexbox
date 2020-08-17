@@ -32,6 +32,9 @@ namespace Avalonia.Flexbox
         private static readonly AttachedProperty<IFlexLayout> OwnerFlexLayoutProperty =
             AvaloniaProperty.RegisterAttached<FlexLayout, Layoutable, IFlexLayout>("OwnerFlexLayout");
 
+        private static readonly Func<ILayoutable, int> s_GetOrder = x => x is Layoutable y ? Flex.GetOrder(y) : 0;
+        private static readonly Func<ILayoutable, bool> s_IsVisible = x => x.IsVisible;
+
         static FlexLayout()
         {
             AffectsMeasure(
@@ -123,7 +126,7 @@ namespace Avalonia.Flexbox
 
             var i = 0;
 
-            var children = context.Children.OrderBy(GetOrder).ToArray();
+            var children = context.Children.Where(s_IsVisible).OrderBy(s_GetOrder).ToArray();
 
             foreach (var element in children)
             {
@@ -306,8 +309,6 @@ namespace Avalonia.Flexbox
 
             return finalSize;
         }
-
-        private static int GetOrder(ILayoutable layoutable) => layoutable is Layoutable x ? Flex.GetOrder(x) : 0;
 
         // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/17d4ae9e4ea0c99dc9cfe951d6e1cbcf64f628dc/src/Avalonia.Layout/Layoutable.cs
         // - AffectsMeasure
