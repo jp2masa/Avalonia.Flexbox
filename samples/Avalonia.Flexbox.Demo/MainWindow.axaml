@@ -14,30 +14,35 @@
         <conv:NumberToThicknessConverter x:Key="NumberToThicknessConverter" />
         <DataTemplate x:Key="ItemTemplate"
                       x:DataType="vm:ItemViewModel">
-            <Border Padding="{Binding Value, Converter={StaticResource NumberToThicknessConverter}}"
-                    IsEnabled="{Binding !IsSelected}"
-                    Gestures.Tapped="OnItemTapped">
-                <Border.Styles>
-                    <Style Selector="Border">
+            <ListBoxItem Padding="{Binding Value, Converter={StaticResource NumberToThicknessConverter}}"
+                         IsSelected="{Binding IsSelected}"
+                         Gestures.Tapped="OnItemTapped">
+                <ListBoxItem.Styles>
+                    <Style Selector="ListBoxItem">
                         <Setter Property="Background" Value="LightBlue" />
                     </Style>
-                    <Style Selector="Border[IsEnabled=False]">
+                    <Style Selector="ListBoxItem:selected">
                         <Setter Property="Background" Value="DodgerBlue" />
                     </Style>
-                </Border.Styles>
+                </ListBoxItem.Styles>
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Text="{Binding Value}" />
-            </Border>
+            </ListBoxItem>
         </DataTemplate>
     </Window.Resources>
     <Window.Styles>
+        <Style Selector="CheckBox">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="Padding" Value="8,0,0,0" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
         <Style Selector="ComboBox">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
         </Style>
         <Style Selector="RadioButton">
             <Setter Property="MinWidth" Value="0" />
-            <Setter Property="Padding" Value="4,0,0,0" />
+            <Setter Property="Padding" Value="8,0,0,0" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
     </Window.Styles>
@@ -53,7 +58,7 @@
                 <TextBlock FontSize="16"
                            Text="Properties" />
 
-                <flex:FlexPanel ColumnSpacing="8">
+                <flex:FlexPanel ColumnSpacing="16">
                     <RadioButton IsChecked="{Binding IsItemsControl}"
                                  Content="ItemsControl" />
                     <RadioButton IsChecked="{Binding IsItemsRepeater}"
@@ -102,6 +107,10 @@
                                    Value="{Binding RowSpacing}" />
                 </StackPanel>
 
+                <CheckBox IsEnabled="{Binding !!SelectedItem}"
+                          Content="SelectedItem IsVisible"
+                          IsChecked="{Binding SelectedItem.IsVisible}" />
+
                 <StackPanel Spacing="8">
                     <TextBlock Text="SelectedItem AlignSelf:" />
                     <ComboBox IsEnabled="{Binding !!SelectedItem}"
@@ -145,6 +154,7 @@
                        x:DataType="vm:ItemViewModel">
                     <Setter Property="flex:Flex.AlignSelf" Value="{Binding AlignSelf}" />
                     <Setter Property="flex:Flex.Order" Value="{Binding Order}" />
+                    <Setter Property="IsVisible" Value="{Binding IsVisible}" />
                 </Style>
             </ItemsControl.Styles>
             <ItemsControl.ItemsPanel>
@@ -167,10 +177,11 @@
             <ItemsRepeater Items="{Binding Numbers}"
                            ItemTemplate="{StaticResource ItemTemplate}">
                 <ItemsRepeater.Styles>
-                    <Style Selector="Border"
+                    <Style Selector="ListBoxItem"
                            x:DataType="vm:ItemViewModel">
                         <Setter Property="flex:Flex.AlignSelf" Value="{Binding AlignSelf}" />
                         <Setter Property="flex:Flex.Order" Value="{Binding Order}" />
+                        <Setter Property="IsVisible" Value="{Binding IsVisible}" />
                     </Style>
                 </ItemsRepeater.Styles>
                 <ItemsRepeater.Layout>

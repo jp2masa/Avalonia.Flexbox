@@ -21,7 +21,7 @@ namespace Avalonia.Flexbox.Demo
 
         private void OnItemTapped(object? sender, RoutedEventArgs e)
         {
-            if (sender is Border control && control.DataContext is ItemViewModel item)
+            if (sender is ListBoxItem control && control.DataContext is ItemViewModel item)
             {
                 if (ViewModel.SelectedItem != null)
                 {

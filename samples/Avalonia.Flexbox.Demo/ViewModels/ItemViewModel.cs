@@ -11,6 +11,7 @@ namespace Avalonia.Flexbox.Demo.ViewModels
         private readonly ObservableAsPropertyHelper<AlignItems?> _alignSelf;
 
         private bool _isSelected;
+        private bool _isVisible = true;
 
         private AlignItems _alignSelfItem = AlignSelfAuto;
         private int _order;
@@ -29,6 +30,12 @@ namespace Avalonia.Flexbox.Demo.ViewModels
         {
             get => _isSelected;
             set => this.RaiseAndSetIfChanged(ref _isSelected, value);
+        }
+
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => this.RaiseAndSetIfChanged(ref _isVisible, value);
         }
 
         public AlignItems AlignSelfItem
