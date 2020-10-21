@@ -30,6 +30,14 @@ artifacts:
 
 deploy:
 - provider: NuGet
+  api_key:
+    secure: d12+xmhB5PXZ/L1DOYT5bTC5K3Tgqo2l8j5v9Uxtchoa+ljOWlu8YpW2xjSam54l
+  artifact: ReleaseNupkg
+  on:
+    branch: master
+    configuration: Release
+    appveyor_repo_tag: true
+- provider: NuGet
   server: https://www.myget.org/F/jp2masa/api/v2/package
   artifact: DebugNupkg
   api_key:
