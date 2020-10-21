@@ -1,6 +1,8 @@
 <Project>
 
     <PropertyGroup>
+        <PackageId Condition="'$(PackageId)' == ''">$(AssemblyName)</PackageId>
+        <PackageId>jp2masa.$(PackageId)</PackageId>
         <PackageDescription Condition="'$(PackageDescription)' != ''">$(PackageDescription)
 
 $(BaseDescription)</PackageDescription>
