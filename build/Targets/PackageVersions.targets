@@ -1,8 +1,8 @@
 <Project>
 
     <PropertyGroup>
-        <AvaloniaVersion>0.10.0-preview5</AvaloniaVersion>
-        <MicrosoftCodeAnalysisFxCopAnalyzersVersion>3.3.0</MicrosoftCodeAnalysisFxCopAnalyzersVersion>
+        <AvaloniaVersion>0.10.0-rc1</AvaloniaVersion>
+        <MicrosoftCodeAnalysisNetAnalyzersVersion>5.0.1</MicrosoftCodeAnalysisNetAnalyzersVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,7 +10,7 @@
         <PackageReference Update="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
         <PackageReference Update="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
         <PackageReference Update="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-        <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="$(MicrosoftCodeAnalysisFxCopAnalyzersVersion)" />
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="$(MicrosoftCodeAnalysisNetAnalyzersVersion)" />
     </ItemGroup>
 
 </Project>

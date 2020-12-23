@@ -27,6 +27,6 @@ namespace Avalonia.Flexbox.Demo
             AppBuilder.Configure<App>()
                       .UsePlatformDetect()
                       .UseReactiveUI()
-                      .LogToDebug();
+                      .LogToTrace();
     }
 }
