@@ -114,7 +114,6 @@ namespace Avalonia.Flexbox
             var spacing = Uv.FromSize(layout.ColumnSpacing, layout.RowSpacing, isColumn);
 
             var u = 0.0;
-            var maxU = 0.0;
             var m = 0;
 
             var v = 0.0;
@@ -152,11 +151,6 @@ namespace Avalonia.Flexbox
                 {
                     sections.Add(new Section(first, i - 1, u, maxV));
 
-                    if (u > maxU)
-                    {
-                        maxU = u;
-                    }
-
                     u = 0.0;
                     m = 0;
 
@@ -181,11 +175,6 @@ namespace Avalonia.Flexbox
             if (m != 0)
             {
                 sections.Add(new Section(first, first + m - 1, u, maxV));
-
-                if (u > maxU)
-                {
-                    maxU = u;
-                }
             }
 
             if (layout.Wrap == FlexWrap.WrapReverse)
@@ -195,7 +184,12 @@ namespace Avalonia.Flexbox
 
             context.LayoutState = new FlexLayoutState(children, sections);
 
-            return Uv.ToSize(new Uv(maxU + sections.Max(s => s.Last - s.First) * spacing.U, v + maxV + (sections.Count - 1) * spacing.V), isColumn);
+            if (sections.Count == 0)
+            {
+                return default;
+            }
+
+            return Uv.ToSize(new Uv(sections.Max(s => s.U + (s.Last - s.First + even) * spacing.U), v + maxV + (sections.Count - 1) * spacing.V), isColumn);
         }
 
         protected override Size ArrangeOverride(NonVirtualizingLayoutContext context, Size finalSize)
