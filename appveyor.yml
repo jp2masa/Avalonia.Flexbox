@@ -1,5 +1,5 @@
 version: 0.2.0-build{build}
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 shallow_clone: true
 clone_folder: c:\Avalonia.Flexbox
@@ -31,7 +31,7 @@ artifacts:
 deploy:
 - provider: NuGet
   api_key:
-    secure: d12+xmhB5PXZ/L1DOYT5bTC5K3Tgqo2l8j5v9Uxtchoa+ljOWlu8YpW2xjSam54l
+    secure: xWkQ7tm0o3jWSCcsQ9QiBIPe5VDqJbCzf9aVi+zIgnbhXV2FGT34eOuJetk7QqLU
   artifact: ReleaseNupkg
   on:
     branch: master
