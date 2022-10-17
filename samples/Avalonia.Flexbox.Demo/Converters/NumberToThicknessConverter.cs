@@ -7,7 +7,7 @@ namespace Avalonia.Flexbox.Demo.Converters
 {
     internal sealed class NumberToThicknessConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value is int x && targetType.IsAssignableFrom(typeof(Thickness)))
             {
@@ -18,7 +18,7 @@ namespace Avalonia.Flexbox.Demo.Converters
             throw new NotSupportedException();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
             throw new NotSupportedException();
     }
 }
