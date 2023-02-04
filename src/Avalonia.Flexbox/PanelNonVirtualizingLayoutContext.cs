@@ -14,6 +14,7 @@ namespace Avalonia.Flexbox
             _panel = panel;
         }
 
-        protected override IReadOnlyList<ILayoutable> ChildrenCore => _panel.Children;
+        protected override IReadOnlyList<Layoutable> ChildrenCore =>
+            _panel.Children;
     }
 }

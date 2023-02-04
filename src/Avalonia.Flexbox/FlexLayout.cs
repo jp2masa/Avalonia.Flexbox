@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Avalonia.Layout;
+using Avalonia.Reactive;
 
 namespace Avalonia.Flexbox
 {
@@ -32,8 +33,8 @@ namespace Avalonia.Flexbox
         private static readonly AttachedProperty<IFlexLayout> OwnerFlexLayoutProperty =
             AvaloniaProperty.RegisterAttached<FlexLayout, Layoutable, IFlexLayout>("OwnerFlexLayout");
 
-        private static readonly Func<ILayoutable, int> s_GetOrder = x => x is Layoutable y ? Flex.GetOrder(y) : 0;
-        private static readonly Func<ILayoutable, bool> s_IsVisible = x => x.IsVisible;
+        private static readonly Func<Layoutable, int> s_GetOrder = x => x is Layoutable y ? Flex.GetOrder(y) : 0;
+        private static readonly Func<Layoutable, bool> s_IsVisible = x => x.IsVisible;
 
         static FlexLayout()
         {
@@ -129,7 +130,7 @@ namespace Avalonia.Flexbox
 
             foreach (var element in children)
             {
-                if (element is IAvaloniaObject obj)
+                if (element is AvaloniaObject obj)
                 {
                     var owner = obj.GetValue(OwnerFlexLayoutProperty);
 
@@ -304,53 +305,55 @@ namespace Avalonia.Flexbox
             return finalSize;
         }
 
-        // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/17d4ae9e4ea0c99dc9cfe951d6e1cbcf64f628dc/src/Avalonia.Layout/Layoutable.cs
+        // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/92fdbb5152f11f707b3f46cda25472525c70c3a3/src/Avalonia.Base/Layout/Layoutable.cs
         // - AffectsMeasure
         // - AffectsArrange
         private static void AffectsMeasure(params AvaloniaProperty[] properties)
         {
-            void Invalidate(AvaloniaPropertyChangedEventArgs e)
-            {
-                (e.Sender as FlexLayout)?.InvalidateMeasure();
-            }
+            var invalidateObserver = new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
+                static e => (e.Sender as FlexLayout)?.InvalidateMeasure());
 
             foreach (var property in properties)
             {
-                property.Changed.Subscribe(Invalidate);
+                property.Changed.Subscribe(invalidateObserver);
             }
         }
 
         private static void AffectsArrange(params AvaloniaProperty[] properties)
         {
-            void Invalidate(AvaloniaPropertyChangedEventArgs e)
-            {
-                (e.Sender as FlexLayout)?.InvalidateArrange();
-            }
+            var invalidateObserver = new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
+                static e => (e.Sender as FlexLayout)?.InvalidateArrange());
 
             foreach (var property in properties)
             {
-                property.Changed.Subscribe(Invalidate);
+                property.Changed.Subscribe(invalidateObserver);
             }
         }
 
-        // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/17d4ae9e4ea0c99dc9cfe951d6e1cbcf64f628dc/src/Avalonia.Controls/Panel.cs
+        // Adapted from Avalonia: https://github.com/AvaloniaUI/Avalonia/blob/92fdbb5152f11f707b3f46cda25472525c70c3a3/src/Avalonia.Controls/Panel.cs
         // - AffectsParentMeasure
         // - AffectsParentArrange
         // - AffectsParentMeasureInvalidate
         // - AffectsParentArrangeInvalidate
         private static void AffectsLayoutMeasure(params AvaloniaProperty[] properties)
         {
+            var invalidateObserver = new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
+                AffectsLayoutMeasureInvalidate);
+
             foreach (var property in properties)
             {
-                property.Changed.Subscribe(AffectsLayoutMeasureInvalidate);
+                property.Changed.Subscribe(invalidateObserver);
             }
         }
 
         private static void AffectsLayoutArrange(params AvaloniaProperty[] properties)
         {
+            var invalidateObserver = new AnonymousObserver<AvaloniaPropertyChangedEventArgs>(
+                AffectsLayoutArrangeInvalidate);
+
             foreach (var property in properties)
             {
-                property.Changed.Subscribe(AffectsLayoutArrangeInvalidate);
+                property.Changed.Subscribe(invalidateObserver);
             }
         }
 
@@ -378,13 +381,13 @@ namespace Avalonia.Flexbox
 
         private struct FlexLayoutState
         {
-            public FlexLayoutState(IReadOnlyList<ILayoutable> children, IReadOnlyList<Section> sections)
+            public FlexLayoutState(IReadOnlyList<Layoutable> children, IReadOnlyList<Section> sections)
             {
                 Children = children;
                 Sections = sections;
             }
 
-            public IReadOnlyList<ILayoutable> Children { get; }
+            public IReadOnlyList<Layoutable> Children { get; }
 
             public IReadOnlyList<Section> Sections { get; }
         }

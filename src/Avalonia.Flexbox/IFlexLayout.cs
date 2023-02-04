@@ -1,6 +1,6 @@
 ﻿namespace Avalonia.Flexbox
 {
-    internal interface IFlexLayout : IAvaloniaObject
+    internal interface IFlexLayout
     {
         public FlexDirection Direction { get; }
 

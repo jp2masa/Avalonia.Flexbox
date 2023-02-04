@@ -1,12 +1,13 @@
 <Project>
 
     <PropertyGroup>
-        <AvaloniaVersion>11.0.0-preview2</AvaloniaVersion>
-        <MicrosoftCodeAnalysisNetAnalyzersVersion>7.0.0-preview1.22464.1</MicrosoftCodeAnalysisNetAnalyzersVersion>
+        <AvaloniaVersion>11.0.0-preview5</AvaloniaVersion>
+        <MicrosoftCodeAnalysisNetAnalyzersVersion>7.0.0</MicrosoftCodeAnalysisNetAnalyzersVersion>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Update="Avalonia" Version="$(AvaloniaVersion)" />
+        <PackageReference Update="Avalonia.Controls.ItemsRepeater" Version="$(AvaloniaVersion)" />
         <PackageReference Update="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
         <PackageReference Update="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
         <PackageReference Update="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
