@@ -1,23 +1,17 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using Avalonia.Flexbox.Demo.ViewModels;
 
 namespace Avalonia.Flexbox.Demo
 {
-    public sealed class MainWindow : ReactiveWindow<MainWindowViewModel>
+    public sealed partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         public MainWindow()
         {
             InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void OnItemTapped(object? sender, RoutedEventArgs e)
         {
