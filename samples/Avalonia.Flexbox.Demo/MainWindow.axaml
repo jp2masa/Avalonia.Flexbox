@@ -67,31 +67,31 @@
 
                 <StackPanel Spacing="8">
                     <TextBlock Text="Direction:" />
-                    <ComboBox Items="{Binding DirectionValues}"
+                    <ComboBox ItemsSource="{Binding DirectionValues}"
                               SelectedItem="{Binding Direction}" />
                 </StackPanel>
 
                 <StackPanel Spacing="8">
                     <TextBlock Text="JustifyContent:" />
-                    <ComboBox Items="{Binding JustifyContentValues}"
+                    <ComboBox ItemsSource="{Binding JustifyContentValues}"
                               SelectedItem="{Binding JustifyContent}" />
                 </StackPanel>
 
                 <StackPanel Spacing="8">
                     <TextBlock Text="AlignItems:" />
-                    <ComboBox Items="{Binding AlignItemsValues}"
+                    <ComboBox ItemsSource="{Binding AlignItemsValues}"
                               SelectedItem="{Binding AlignItems}" />
                 </StackPanel>
 
                 <StackPanel Spacing="8">
                     <TextBlock Text="AlignContent:" />
-                    <ComboBox Items="{Binding AlignContentValues}"
+                    <ComboBox ItemsSource="{Binding AlignContentValues}"
                               SelectedItem="{Binding AlignContent}" />
                 </StackPanel>
 
                 <StackPanel Spacing="8">
                     <TextBlock Text="Wrap:" />
-                    <ComboBox Items="{Binding WrapValues}"
+                    <ComboBox ItemsSource="{Binding WrapValues}"
                               SelectedItem="{Binding Wrap}" />
                 </StackPanel>
 
@@ -114,7 +114,7 @@
                 <StackPanel Spacing="8">
                     <TextBlock Text="SelectedItem AlignSelf:" />
                     <ComboBox IsEnabled="{Binding !!SelectedItem}"
-                              Items="{Binding AlignSelfValues}"
+                              ItemsSource="{Binding AlignSelfValues}"
                               SelectedItem="{Binding SelectedItem.AlignSelfItem}" />
                 </StackPanel>
 
@@ -147,7 +147,7 @@
         <ItemsControl IsVisible="{Binding IsItemsControl}"
                       BorderBrush="Black"
                       BorderThickness="1"
-                      Items="{Binding Numbers}"
+                      ItemsSource="{Binding Numbers}"
                       ItemTemplate="{StaticResource ItemTemplate}">
             <ItemsControl.Styles>
                 <Style Selector="ContentPresenter"
@@ -174,7 +174,7 @@
                 BorderBrush="Black"
                 BorderThickness="1">
 
-            <ItemsRepeater Items="{Binding Numbers}"
+            <ItemsRepeater ItemsSource="{Binding Numbers}"
                            ItemTemplate="{StaticResource ItemTemplate}">
                 <ItemsRepeater.Styles>
                     <Style Selector="ListBoxItem"
